@@ -53,6 +53,7 @@ try{
  const [v]=await run('sample','--ref='+added.id.slice(0,12));assert.equal(v.nz_retain_until,'2054-02-28');assert.equal(v.result_text,'<0.01');
  const [plan]=await run('plan-sampling','--group='+group.id,'--task=Test plan','--owner=Test owner','--due=2027-01-01','--actor=Tester');
  await reject(()=>run('complete-plan','--ref='+plan.id,'--sample=dust-101','--actor=Tester'),/different exposure group/);
+ await reject(()=>db.query("UPDATE sampling_plans SET state='completed',evidence_sample=$1 WHERE id=$2",[added.id,plan.id]),/check constraint/);
  await run('complete-plan','--ref='+plan.id,'--sample='+added.id,'--actor=Tester');
  await reject(()=>run('complete-plan','--ref='+plan.id,'--sample='+added.id,'--actor=Tester'),/already completed/);
  await reject(()=>run('review-sample','--ref='+added.id,'--decision=record_checked','--reviewer=Tester','--evidence=Test','--date=2024-02-28','--actor=Tester'),/precedes/);
@@ -60,6 +61,7 @@ try{
  assert.ok((await run('compliance')).some(r=>r.rule==='follow-up-owner'&&r.id===added.id));
  const [action]=await run('add-action','--ref='+added.id,'--title=Inspect <script>alert(1)</script> & evidence','--owner=Test owner','--due=2024-03-02','--actor=Tester');
  await reject(()=>run('close-action','--ref='+action.id,'--evidence=','--actor=Tester'),/nonempty/);
+ await reject(()=>db.query("UPDATE actions SET state='closed' WHERE id=$1",[action.id]),/check constraint/);
  await run('close-action','--ref='+action.id,'--evidence=Test inspection reference','--actor=Tester');
  await reject(()=>run('close-action','--ref='+action.id,'--evidence=Again','--actor=Tester'),/already closed/);
  await run('review-sample','--ref='+added.id,'--decision=record_checked','--reviewer=Test reviewer','--evidence=Test review after follow-up','--date=2024-03-03','--actor=Tester');
