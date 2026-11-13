@@ -1,13 +1,20 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Exposure Records for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Exposure sampling review",
+    "subtitle": "Internal evidence review. No safe exposure conclusion is made.",
     "sections": [
       {
+        "title": "Sampling coverage",
+        "sql": "SELECT site,exposure_group,agent,sample_count,last_sample,open_plans,unreviewed_samples FROM v_coverage ORDER BY site,exposure_group"
+      },
+      {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "sql": "SELECT kind,site,exposure_group,detail,owner,due FROM v_attention ORDER BY due"
+      },
+      {
+        "title": "Record controls",
+        "sql": "SELECT rule,record,finding FROM v_compliance ORDER BY rule,record"
       }
     ]
   }

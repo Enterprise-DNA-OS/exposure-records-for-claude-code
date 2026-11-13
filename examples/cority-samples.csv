@@ -1,0 +1,3 @@
+source_id,site,group,agent,sampled_on,recorded_on,task,result,units,report,method
+IMPORT-1,Fictional Harbour Works,Mixing crew,Respirable dust,2026-10-01,2026-10-03,"Bag tipping, morning",<0.02,mg/m3,DEMO-IMPORT-1,DEMO-METHOD-1
+IMPORT-2,Fictional Harbour Works,Legacy plant survey,Asbestos,2026-10-02,2026-10-04,Plant survey,Not detected,fibres/ml,DEMO-IMPORT-2,DEMO-METHOD-2

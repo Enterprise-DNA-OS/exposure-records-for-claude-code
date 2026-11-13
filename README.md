@@ -1,115 +1,94 @@
-<h1 align="center">Exposure Records for Claude Code</h1>
+# Exposure Records for Claude Code
 
-<p align="center">
-  <strong>The open-source exposure sampling records system that is just a database and Claude Code.</strong>
-</p>
+Keep exposure sampling evidence, review decisions and control follow-up in your own database. A focused alternative for the records desk around Cority Industrial Hygiene.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+Built by Enterprise DNA. MIT licence. Works with Claude Code, Codex, OpenCode or Cursor.
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Cority Industrial Hygiene data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=cority-industrial-hygiene">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/cority-industrial-hygiene?utm_source=github&utm_medium=readme&utm_campaign=cority-industrial-hygiene">How it works</a></td>
-  </tr>
-</table>
-
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-cority-industrial-hygiene">Instead of Cority Industrial Hygiene</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Exposure Records for Claude Code does the job you pay Cority Industrial Hygiene for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Cority Industrial Hygiene dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Cority Industrial Hygiene per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=cority-industrial-hygiene).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free. Install the database and commands below. | Your groups, review rules, export mapping and reports. | Installed and operated through Omni by Enterprise DNA. Setup fee, then a retainer. |
+| [Quick start](#quick-start) | [Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_medium=github&utm_campaign=cority-industrial-hygiene) | [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_medium=github&utm_campaign=cority-industrial-hygiene) |
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 22 or newer. No Cority account, instrument or hosted database is needed for the fictional demo.
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/exposure-records-for-claude-code.git
 cd exposure-records-for-claude-code
 npm install
 npm run demo
+npm run exposure -- lab-review
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The demo contains two fictional sites, four exposure groups and four samples. A mixing crew has follow-up that is overdue. A fibre record lacks method evidence. A packing group has no saved sample. A lower follow-up result stays unreviewed until the hygienist records a decision. All result values are fictional and imply no exposure conclusion.
 
-### Use it with your own Postgres or Supabase
+PGlite stores data in .data/db. DATABASE_URL selects PostgreSQL. Run npm run migrate before using a new database. Shared deployments need enforced identity, access controls, backups and a reviewed retention and disclosure process. The CLI uses a trusted operator connection.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## The working week
 
-## The commands
+1. /sampling-plan lists planned work, owners and missed dates.
+2. /coverage-review finds groups with no saved samples.
+3. /lab-review lists records awaiting qualified review or more evidence.
+4. /control-review connects human follow-up decisions to actions.
+5. /weekly-review drafts a Monday report from coverage, attention and record controls.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+29 CLI verbs and 35 task commands ship in .claude/commands, including /customise and /new-view. Run npm run exposure -- help. The CLI displays readable columns by default and --json for processing. Case-insensitive names and ID prefixes work. Ambiguous names list candidates and exit 1.
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Bring the records across
 
-## Instead of Cority Industrial Hygiene
+Cority describes CSV export through its ad hoc reporting. Each tenant can have different report headings. Map your actual report once, then bring it across in one import. Review the row count and original dates first. The [switching guide](docs/replace-cority-industrial-hygiene.md) defines the exact mapping and records that need additional migration.
 
-<!-- TODO(author): how to bring data across from Cority Industrial Hygiene; link docs/replace-cority-industrial-hygiene.md -->
-
-## Architecture
-
-```
-exposure-records-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
+```bash
+npm run exposure -- import cority --source="Demo export" --file=examples/cority-samples.csv --expected-count=2 --source-ref="Fictional fixture, all rows" --actor="Demo operator" --dry-run
 ```
 
-## Built for coding agents
+Repeat without --dry-run to save the two fictional records. Real imports require the actual source namespace, report reference, actor and count. The whole file succeeds or nothing changes. Repeated identical rows skip. A changed source ID is refused, preserving original evidence. CSV values remain text with units and qualifiers intact. No exposure level is calculated.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Ten questions to ask
 
-## Contributing
+These questions run today. Cority has configurable reporting too; no claim is made that it cannot answer them. The difference is an owned combination of imported evidence, local reviews and follow-up.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+1. Which exposure groups have no saved samples? `coverage`
+2. Which lab records still await a qualified review? `lab-review`
+3. Which sampling tasks have missed their agreed dates? `plans`
+4. Which control follow-ups are overdue and who owns them? `actions`
+5. Where has a reviewer requested follow-up without an open action? `compliance`
+6. Which samples have no recorded method reference? `compliance`
+7. What changed between the first review and the latest one? `sample`
+8. Which records carry a NZ asbestos retention date? `samples`
+9. Which imported batches support this week’s review? `imports`
+10. Which site needs its access arrangements reviewed? `compliance`
 
-## Want it installed and run for you?
+## Your first hour: ten things to ask for
 
-Enterprise DNA installs Exposure Records for Claude Code for your business, migrates your Cority Industrial Hygiene data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+1. Put our business name, colours and logo in brand.json.
+2. Register our real sites and jurisdiction.
+3. Record our exposure groups and agents.
+4. Agree the review and sampling dates with our hygienist.
+5. Check our actual Cority report columns.
+6. Reconcile the exported count and original record dates.
+7. Import a preview and inspect every missing reference.
+8. Assign follow-up owners and evidence requirements.
+9. Render our private sampling briefs and result packets.
+10. Add a field or read-only view for our weekly review.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=cority-industrial-hygiene)
-- Read more: [enterprisedna.co/omni/instead-of/cority-industrial-hygiene](https://enterprisedna.co/omni/instead-of/cority-industrial-hygiene?utm_source=github&utm_medium=readme&utm_campaign=cority-industrial-hygiene)
+/customise writes and tests a new migration. /new-view adds a branded read-only report. Original samples, reviews, imports, notes and events are append-only. The database owner can bypass these controls, so they are not an authenticated audit service.
 
-## License
+## Reports and responsibilities
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+npm run docs creates sampling briefs and result review packets in docs-out. npm run view writes views/week.html. Both use brand.json and escape imported text. Drafts and reports remain private. There is no sender or notification worker.
+
+A qualified hygienist supplies sampling decisions and interprets results. record_checked means evidence checked, never safe exposure. Closing an action never changes the source sample. [Record controls](docs/compliance.md) cite NZ retention guidance and clearly mark local policy and Australian jurisdiction checks. Source reports stay in your controlled evidence store; the base holds references, not attached files. Clinical histories and worker identities are outside this desk.
+
+Cority also supplies monitoring analytics, field capture and wider health and safety workflows. Enterprise DNA scopes the screens and connections required for your custom version. Keep existing operational controls until the replacement meets your requirements. [Why no front end](docs/why-no-front-end.md).
+
+## Backup and validation
+
+npm run exposure -- export --file=exports/backup.json writes all nine domain record types to a new private file. It refuses overwrites. Keep native database backups and original exports too. Automated JSON restoration is not included; test your native backup restore process before using real records.
+
+npm test checks all 29 verbs, atomic imports, repeat imports, source conflicts, header mapping, evidence preservation, NZ 30/40-year dates, leap days, Australian unknowns, ambiguous matching, action closure, JSON export and escaped HTML. See [validation](docs/validation.md) for actual execution and [research](docs/research.md) for the selection evidence.
+
+Built and optionally operated through [Omni by Enterprise DNA](https://enterprisedna.co/omni/instead-of/cority-industrial-hygiene?utm_source=github&utm_medium=readme&utm_campaign=cority-industrial-hygiene).

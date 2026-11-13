@@ -1,0 +1,13 @@
+{
+  "source_id": "Sample reference",
+  "site": "Location",
+  "group": "Exposure group",
+  "agent": "Agent",
+  "sampled_on": "Sample date",
+  "recorded_on": "Record date",
+  "task": "Activity",
+  "result": "Reported result",
+  "units": "Unit",
+  "report": "Laboratory reference",
+  "method": "Method reference"
+}

@@ -1,11 +1,51 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "sampling-brief",
+    "title": "Sampling brief for qualified review",
+    "for_each": "SELECT id,name FROM exposure_groups ORDER BY name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Exposure group",
+        "layout": "record",
+        "sql": "SELECT site,exposure_group,agent,review_due,sample_count,last_sample FROM v_coverage WHERE id=$1"
+      },
+      {
+        "title": "Planned work",
+        "sql": "SELECT task,owner,due,state FROM sampling_plans WHERE group_id=$1 ORDER BY due",
+        "note": "The hygienist sets the sampling method and duration. This is a task brief, not a sampling protocol."
+      },
+      {
+        "title": "Previous observations",
+        "sql": "SELECT source_id,sampled_on,result_text,units,decision,report_ref FROM v_samples WHERE id IN (SELECT id FROM samples WHERE group_id=$1) ORDER BY sampled_on"
+      }
+    ]
+  },
+  {
+    "name": "result-review",
+    "title": "Exposure record review packet",
+    "for_each": "SELECT id,source_id FROM samples ORDER BY source_id",
+    "file": "source_id",
+    "sections": [
+      {
+        "title": "Source record",
+        "layout": "record",
+        "sql": "SELECT source,source_id,site,exposure_group,agent,sampled_on,recorded_on,result_text,units,report_ref,method_ref,nz_retain_until FROM v_samples WHERE id=$1",
+        "note": "Private internal packet. Verify source evidence and redact personal information before any disclosure."
+      },
+      {
+        "title": "Review history",
+        "sql": "SELECT revision,decision,reviewer,evidence,reviewed_on FROM reviews WHERE sample_id=$1 ORDER BY revision",
+        "note": "Record checked means the evidence was checked. It is not a declaration that exposure is safe."
+      },
+      {
+        "title": "Follow-up",
+        "sql": "SELECT title,owner,due,state,closure_evidence FROM actions WHERE sample_id=$1 ORDER BY due"
+      },
+      {
+        "title": "Notes",
+        "sql": "SELECT actor,body,created_at FROM notes WHERE sample_id=$1 ORDER BY created_at"
+      }
     ]
   }
 ]

@@ -1,24 +1,7 @@
-# Why there is no front end
+# Why no front end
 
-Cority Industrial Hygiene is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+This desk reviews saved group-level sampling evidence, planned work and control follow-up. Claude Code, Codex, OpenCode or Cursor can run the one CLI, and an owner can read branded HTML review packets without a server.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+A field screen gives mobile forms, offline capture, attachments, instrument connections and simultaneous entry. This base provides none of those. It does not replace measurement equipment or a hygienist's judgement. Cority offers wider monitoring and analysis functions. Enterprise DNA can build the required screens and connections into a custom version after scope and controls are agreed.
 
-## What you gain
-
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
-
-## What you give up
-
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
-
-## Who this fits
-
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep Cority Industrial Hygiene. If you need the answers more than the screens, this is cheaper, faster and yours.
-
-Installed and run for you: https://enterprisedna.co/omni/instead-of/cority-industrial-hygiene
+Run npm run view for the weekly read-only report, and npm run docs for sampling briefs and result packets. Set the business name, logo and colours in brand.json. No button writes to records. Drafts never send.
